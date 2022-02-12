@@ -1,25 +1,19 @@
 <template>
   <div class="hello">
-    <!-- <p>{{ get_Biance_Colletion_Data }}</p> -->
-    <p></p>
-    <!-- <b-form-select
-      v-model="selected"
-      :options="get_Biance_Cerruncy_Sembol_List"
-    ></b-form-select>
-    {{ selected }} -->
-    {{ get_Biance_Colletion_Data }}
     <label for="input-with-list">Input with datalist</label>
     <b-form-input
       class="mt-2"
       v-model="selected"
       list="input-list"
       id="input-with-list"
-      @change="hepsiburada"
+      @change="selecdlistChange"
     ></b-form-input>
     <b-form-datalist
       id="input-list"
       :options="get_Biance_Cerruncy_Sembol_List"
     ></b-form-datalist>
+
+    {{ get_Biance_Colletion_Data }}
   </div>
 </template>
 
@@ -33,6 +27,7 @@ export default {
     return {
       msg: [],
       selected: null,
+      polling: null,
     };
   },
   computed: {
@@ -57,16 +52,27 @@ export default {
       "getBianceCurrencyRateSembol",
       "getfilterBianceCurrenctByRateSembol",
     ]),
-    hepsiburada(x){
+    selecdlistChange(x) {
       localStorage.setItem("CoinCurrency", x);
       this.getfilterBianceCurrenctByRateSembol(x);
-      console.log(x +" test data")
-    }
+      console.log(x + " test data");
+      this.pollData(x);
+    },
+    pollData(x) {
+      this.polling = setInterval(() => {
+        this.getfilterBianceCurrenctByRateSembol(x);
+      }, 1000);
+    },
   },
   mounted() {
     if (localStorage.CoinCurrency) {
       this.selected = localStorage.CoinCurrency;
+      this.pollData(this.selected);
     }
+  },
+
+  beforeDestroy() {
+    clearInterval(this.polling);
   },
 };
 </script>
