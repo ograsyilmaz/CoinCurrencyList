@@ -53,6 +53,7 @@ export default {
       "getfilterBianceCurrenctByRateSembol",
     ]),
     selecdlistChange(x) {
+     
       localStorage.setItem("CoinCurrency", x);
       this.getfilterBianceCurrenctByRateSembol(x);
       console.log(x + " test data");
@@ -69,6 +70,7 @@ export default {
       this.selected = localStorage.CoinCurrency;
       this.pollData(this.selected);
     }
+   
   },
 
   beforeDestroy() {

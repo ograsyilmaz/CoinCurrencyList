@@ -46,7 +46,13 @@ const actions = {
         return x.symbol == value;
       });
     });
-    commit("set_Biance_Collection_Data", filterData);
+
+    const replaceData = {
+      Sembol: filterData[0].symbol,
+      HighPrice: filterData[0].highPrice,
+      LowPrice: filterData[0].lowPrice,
+    };
+    commit("set_Biance_Collection_Data", replaceData);
   },
 };
 
